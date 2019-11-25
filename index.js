@@ -6,23 +6,30 @@ const readline = require("readline").createInterface({
 	output: process.stdout
 });
 
-readline.question(`Please enter an element: `, ans => {
-	readline.close();
+const main = () =>
+	readline.question(`Please enter an element: `, ans => {
+		const element = table.find(
+			e =>
+				e.name.toLowerCase() === ans.toLowerCase() ||
+				e.symbol.toLowerCase() === ans.toLowerCase()
+		);
 
-	const element = table.find(
-		e =>
-			e.name.toLowerCase() === ans.toLowerCase() ||
-			e.symbol.toLowerCase() === ans.toLowerCase()
-	);
+		if (!element) return main();
 
-	let shells = [];
-	for (let i = 0; i < element.shells.length; i++) {
-		shells[i] = letters[i] + element.shells[i];
-	}
+		let shells = [];
+		for (let i = 0; i < element.shells.length; i++) {
+			shells[i] = letters[i] + element.shells[i];
+		}
 
-	console.log(`
+		console.log(`
 		Element: ${element.name} [${element.symbol}]
+		Group: ${element.xpos}
+		Period: ${element.ypos}
 		Electron Configuration: ${element.electron_configuration}
 		Shells: ${shells.join(" ")}
 		`);
-});
+
+		readline.close();
+	});
+
+main();
